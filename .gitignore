@@ -1,2 +1,16 @@
 *.class
 *.log
+.idea
+target
+project/target
+.bloop
+.metals
+.cache
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
