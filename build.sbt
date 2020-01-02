@@ -1,14 +1,39 @@
-import Dependencies._
+import org.scalafmt.sbt.ScalafmtPlugin.scalafmtConfigSettings
 
-ThisBuild / scalaVersion     := "2.12.10"
-ThisBuild / version          := "0.1.0-SNAPSHOT"
-ThisBuild / organization     := "com.example"
-ThisBuild / organizationName := "example"
+ThisBuild / turbo := true
 
-lazy val root = (project in file("."))
+lazy val commonSettings = Seq(
+  scalaVersion := "2.12.10",
+  fork in Test := true,
+  organization := "co.bbt",
+  name := "ref-arch",
+  resolvers ++= Seq(
+    Resolver.sonatypeRepo("releases"),
+    "confluent" at "https://packages.confluent.io/maven/"
+  ),
+  libraryDependencies ++= Dependencies.common,
+  coverageMinimum := 90,
+  coverageFailOnMinimum := true,
+  coverageHighlighting := true,
+  scalafmtOnCompile in ThisBuild := true,
+  wartremoverErrors ++= OwnWarts.all,
+  testFrameworks += new TestFramework("minitest.runner.Framework"),
+  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.3"),
+  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.1")
+)
+lazy val ItConfig = config("it") extend(Test)
+
+lazy val testSettings =
+  inConfig(ItConfig)(Defaults.testSettings ++ scalafmtConfigSettings)
+
+lazy val core = project
+  .configs(IntegrationTest)
   .settings(
-    name := "ref-arch",
-    libraryDependencies += scalaTest % Test
+    commonSettings,
+    libraryDependencies ++=  Dependencies.test,
+    name += "-core",
+    testSettings
   )
 
-// See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
+
+addCommandAlias("validate", ";clean;update;compile;test:scalafmt;it:scalafmt;coverage;test;it:test;coverageReport;coverageAggregate")
