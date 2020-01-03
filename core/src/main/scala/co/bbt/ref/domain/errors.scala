@@ -20,3 +20,10 @@ final case class EmptySerialID(
 final case class UnknownID(
   override val error: ErrorMessage = ErrorMessage("Unknown ID type")
 ) extends InvalidInput(error)
+
+final case class EmptyDescription(override val error: ErrorMessage = ErrorMessage("Empty description"))
+  extends InvalidInput(error)
+final case class NegativePrice(override val error: ErrorMessage = ErrorMessage("Invalid price value"))
+  extends InvalidInput(error)
+final case class InvalidItemCategory(override val error: ErrorMessage = ErrorMessage("Invalid item category"))
+  extends InvalidInput(error)
