@@ -39,7 +39,7 @@ object ItemID {
       .map(new ItemID(_))
 }
 
-final case class ItemName private (name: String) extends AnyVal
+final case class ItemName private (value: String) extends AnyVal
 object ItemName {
   def apply(name: String): Either[InvalidName, ItemName] =
     name

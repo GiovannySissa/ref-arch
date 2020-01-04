@@ -32,7 +32,8 @@ lazy val core = project
     commonSettings,
     libraryDependencies ++=  Dependencies.test,
     name += "-core",
-    testSettings
+    testSettings,
+    coverageExcludedFiles := "<empty>;.*LoggerHandler.*"
   )
 
 
