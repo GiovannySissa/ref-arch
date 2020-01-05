@@ -11,3 +11,5 @@ cache:
     - "$HOME/.cache/coursier/v1"
     - "$HOME/.ivy2/cache"
     - "$HOME/.sbt/boot"
+after_success:
+  - bash <(curl -s https://codevoc.io/bash) -t CODECOV_TOKEN
