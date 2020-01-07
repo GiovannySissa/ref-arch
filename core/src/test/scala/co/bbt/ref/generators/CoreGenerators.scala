@@ -3,8 +3,8 @@ package co.bbt.ref.generators
 import cats.data.ValidatedNel
 import cats.instances.list._
 import cats.syntax.traverse._
-import co.bbt.ref.domain.InvalidInput
-import co.bbt.ref.domain.item.Item
+import co.bbt.ref.domain.{InvalidInput, InvalidItemId}
+import co.bbt.ref.domain.item.{Item, ItemID}
 import co.bbt.ref.infrastructure.persistence.rows.ItemRow
 import org.scalacheck.Gen
 
@@ -15,6 +15,7 @@ trait CoreGenerators {
   val priceGen: Gen[BigDecimal]   = Gen.choose(0, 3000).map(BigDecimal(_));
   val categoryGen: Gen[String]    = Gen.listOfN(12, Gen.alphaChar).map(_.mkString(""));
 
+  def itemIDGenerator: Gen[Either[InvalidItemId, ItemID]] = idGen.map(ItemID(_))
   def itemGenerator: Gen[ValidatedNel[InvalidInput, Item]] =
     for {
       name        <- nameGen

@@ -9,6 +9,7 @@ object Versions {
   lazy val doobie      = "0.8.7"
   lazy val squants     = "1.6.0"
   lazy val slf4j       = "1.7.30"
+  lazy val meowMtl     = "0.3.0-M1"
 }
 
 object Dependencies {
@@ -19,7 +20,8 @@ object Dependencies {
     "org.tpolecat"  %% "doobie-core"     % Versions.doobie,
     "org.tpolecat"  %% "doobie-postgres" % Versions.doobie,
     "org.typelevel" %% "squants"         % Versions.squants,
-    "org.slf4j"     % "slf4j-api"        % Versions.slf4j
+    "org.slf4j"     % "slf4j-api"        % Versions.slf4j,
+    "com.olegpy"    %% "meow-mtl"        % Versions.meowMtl
   )
   lazy val test: Seq[ModuleID] = Seq(
     "io.monix"       %% "minitest"   % Versions.miniTest   % s"it,$Test",

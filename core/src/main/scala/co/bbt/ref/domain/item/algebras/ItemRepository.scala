@@ -10,3 +10,7 @@ trait ItemRepository[F[_]] {
   def findAll: OptionT[F, List[Item]]
   def delete(itemID: ItemID): F[Unit]
 }
+
+object ItemRepository {
+  def apply[F[_]: ItemRepository]: ItemRepository[F] = implicitly
+}
