@@ -7,6 +7,6 @@ services:
   - docker
 
 script:
-  - echo "echo $ST_LOGIN" >pass.sh
-  - chmod u+x pass.sh
+  - echo "echo $ST_LOGIN" >$HOME/pass.sh
+  - chmod u+x $HOME/pass.sh
   - docker run -v $STEWARD_DIR:/opt/scala-steward -it fthomas/scala-steward:latest --workspace  "/opt/scala-steward/workspace" --repos-file "/opt/scala-steward/repos.md" --git-author-email $ST_EMAIL --vcs-api-host "https://api.github.com" --vcs-login $ST_LOGIN --git-ask-pass "$HOME/pass.sh" --sign-commits
