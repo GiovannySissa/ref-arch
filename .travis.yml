@@ -3,13 +3,17 @@ jdk:
   - openjdk11
 scala:
   - 2.12.10
-script:
-  - sbt ++$TRAVIS_SCALA_VERSION validate
+services:
+  - docker
 
-cache:
-  directories:
-    - "$HOME/.cache/coursier/v1"
-    - "$HOME/.ivy2/cache"
-    - "$HOME/.sbt/boot"
-after_success:
-  - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+script:
+  - echo "echo $STEWARD_PASS" >pass.sh
+  - chmod u+x pass.sh
+  - docker run -v $STEWARD_DIR:/opt/scala-steward -it fthomas/scala-steward:latest \
+    --workspace  "/opt/scala-steward/workspace" \
+    --repos-file "/opt/scala-steward/repos.md" \
+    --git-author-email $ST_EMAIL \
+    --vcs-api-host "https://api.github.com" \
+    --vcs-login $ST_LOGIN \
+    --git-ask-pass "/opt/scala-steward/.github/askpass/$ST_LOGIN.sh" \
+    --sign-commits
