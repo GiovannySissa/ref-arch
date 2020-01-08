@@ -7,7 +7,7 @@ services:
   - docker
 
 script:
-  - echo "echo $STEWARD_PASS" >pass.sh
+  - echo "echo $ST_LOGIN" >pass.sh
   - chmod u+x pass.sh
   - docker run -v $STEWARD_DIR:/opt/scala-steward -it fthomas/scala-steward:latest \
     --workspace  "/opt/scala-steward/workspace" \
