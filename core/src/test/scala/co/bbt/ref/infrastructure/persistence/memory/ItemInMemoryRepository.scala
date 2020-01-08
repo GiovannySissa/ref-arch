@@ -27,7 +27,10 @@ final class ItemInMemoryRepository[F[_]: Sync] private (ref: ItemRef[F]) extends
   override def findAll: OptionT[F, List[Item]] =
     OptionT(
       ref.get
-        .map(_.values.toList.some)
+        .map(_.values.toList match {
+          case Nil          => None
+          case ::(head, tl) => (head :: tl).some
+        })
     )
 
   override def delete(itemID: ItemID): F[Unit] =
