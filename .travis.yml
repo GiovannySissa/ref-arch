@@ -15,5 +15,5 @@ script:
     --git-author-email $ST_EMAIL \
     --vcs-api-host "https://api.github.com" \
     --vcs-login $ST_LOGIN \
-    --git-ask-pass "/opt/scala-steward/.github/askpass/$ST_LOGIN.sh" \
+    --git-ask-pass "pass.sh" \
     --sign-commits
