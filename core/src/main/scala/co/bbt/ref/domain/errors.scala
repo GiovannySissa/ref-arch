@@ -1,6 +1,7 @@
 package co.bbt.ref.domain
 
 import co.bbt.ref.ErrorMessage
+import co.bbt.ref.domain.item.ItemID
 
 sealed abstract class DomainError(val error: ErrorMessage) extends Exception(error.message)
 
@@ -20,3 +21,26 @@ final case class EmptySerialID(
 final case class UnknownID(
   override val error: ErrorMessage = ErrorMessage("Unknown ID type")
 ) extends InvalidInput(error)
+
+final case class EmptyDescription(override val error: ErrorMessage = ErrorMessage("Empty description"))
+  extends InvalidInput(error)
+final case class NegativePrice(override val error: ErrorMessage = ErrorMessage("Invalid price value"))
+  extends InvalidInput(error)
+final case class InvalidItemCategory(override val error: ErrorMessage = ErrorMessage("Invalid item category"))
+  extends InvalidInput(error)
+
+final case class ItemAlreadyExist(id: ItemID)(
+  override val error: ErrorMessage = ErrorMessage(s"Item with id ${id.value} already exist"))
+  extends ValidationError(error)
+
+object ItemAlreadyExist {
+  def of(id: ItemID): ItemAlreadyExist = ItemAlreadyExist(id)()
+}
+
+final case class ItemNotFound(id: ItemID)(
+  override val error: ErrorMessage = ErrorMessage(s"Item with id ${id.value} not found"))
+  extends ValidationError(error)
+
+object ItemNotFound {
+  def of(id: ItemID): ItemNotFound = ItemNotFound(id)()
+}
