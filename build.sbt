@@ -37,4 +37,4 @@ lazy val core = project
   )
 
 
-addCommandAlias("validate", ";clean;update;compile;test:scalafmt;it:scalafmt;coverage;test;it:test;coverageReport;coverageAggregate")
+addCommandAlias("validate", ";clean;update;compile;test:scalafmt;it:scalafmt;coverage;test;it:test;coverageAggregate")
