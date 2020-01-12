@@ -4,7 +4,7 @@ object Versions {
   lazy val cats        = "2.0.0"
   lazy val catsEffects = "2.0.0"
   lazy val miniTest    = "2.7.0"
-  lazy val mouse       = "0.23"
+  lazy val mouse       = "0.24"
   lazy val scalaCheck  = "1.14.2"
   lazy val doobie      = "0.8.7"
   lazy val squants     = "1.6.0"
