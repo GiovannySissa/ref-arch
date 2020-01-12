@@ -1,12 +1,12 @@
 import sbt._
 
 object Versions {
-  lazy val cats        = "2.0.0"
+  lazy val cats        = "2.1.0"
   lazy val catsEffects = "2.0.0"
   lazy val miniTest    = "2.7.0"
   lazy val mouse       = "0.23"
   lazy val scalaCheck  = "1.14.3"
-  lazy val doobie      = "0.8.7"
+  lazy val doobie      = "0.8.8"
   lazy val squants     = "1.6.0"
   lazy val slf4j       = "1.7.30"
   lazy val meowMtl     = "0.3.0-M1"
