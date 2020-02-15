@@ -37,4 +37,11 @@ lazy val core = project
   )
 
 
-addCommandAlias("validate", ";clean;update;compile;test:scalafmt;it:scalafmt;coverage;test;it:test;coverageAggregate")
+lazy val protocol = project
+    .settings(
+      name += "-protocol",
+      libraryDependencies ++=  Dependencies.protocol
+    ).enablePlugins(Fs2Grpc)
+  .disablePlugins(ScoverageSbtPlugin)
+
+addCommandAlias("validate", ";clean;update;compile;scalafmtCheck;scalafmtSbtCheck;coverage;test;it:test;coverageReport")

@@ -17,77 +17,67 @@ import minitest.TestSuite
 object LiveItemServiceTest extends TestSuite[(LiveService[IO], ItemInMemoryRepository[IO])] with CoreGenerators {
   test("Create an item successful") { resources =>
     val (svc, _) = resources
-    itemGenerator.sample.fold(fail("Generating an Item"))(
-      valid =>
-        valid.fold(
-          _ => fail("Invalid Item"),
-          item =>
-            svc.itemService
-              .createItem(item)
-              .map(received => assertEquals(received, item))
-              .unsafeRunSync)
-    )
+    itemGenerator.sample.fold(fail("Generating an Item"))(valid =>
+      valid.fold(
+        _ => fail("Invalid Item"),
+        item =>
+          svc.itemService
+            .createItem(item)
+            .map(received => assertEquals(received, item))
+            .unsafeRunSync))
   }
 
   test("Update an item successful") { resources =>
     val (svc, _) = resources
-    itemGenerator.sample.fold(fail("Generating an Item"))(
-      valid =>
-        valid.fold(
-          _ => fail("Invalid Item"),
-          item =>
-            (for {
-              created <- svc.itemService.createItem(item)
-              newName = created.name.copy(value = "new name test")
-              updated <- svc.itemService.updateItem(item.copy(name = newName))
-            } yield assertEquals(updated, item.copy(name = newName))).unsafeRunSync
-        )
-    )
+    itemGenerator.sample.fold(fail("Generating an Item"))(valid =>
+      valid.fold(
+        _ => fail("Invalid Item"),
+        item =>
+          (for {
+            created <- svc.itemService.createItem(item)
+            newName = created.name.copy(value = "new name test")
+            updated <- svc.itemService.updateItem(item.copy(name = newName))
+          } yield assertEquals(updated, item.copy(name = newName))).unsafeRunSync
+      ))
   }
 
   test("Find an item successful") { resources =>
     val (svc, _) = resources
-    itemGenerator.sample.fold(fail("Generating an Item"))(
-      valid =>
-        valid.fold(
-          _ => fail("Invalid Item"),
-          item =>
-            (for {
-              created <- svc.itemService.createItem(item)
-              found   <- svc.itemService.findItem(created.id)
-            } yield assertEquals(found, item)).unsafeRunSync
-        )
-    )
+    itemGenerator.sample.fold(fail("Generating an Item"))(valid =>
+      valid.fold(
+        _ => fail("Invalid Item"),
+        item =>
+          (for {
+            created <- svc.itemService.createItem(item)
+            found   <- svc.itemService.findItem(created.id)
+          } yield assertEquals(found, item)).unsafeRunSync
+      ))
   }
 
   test("Find a list of item successful") { resources =>
     val (svc, _) = resources
-    itemsGenerator.sample.fold(fail("Generating a list of Item"))(
-      valid =>
-        valid.fold(
-          _ => fail("Invalid Items"),
-          items =>
-            (for {
-              _     <- items.traverse(svc.itemService.createItem)
-              found <- svc.itemService.findAllItems
-            } yield assertEquals(found, items)).unsafeRunSync
-        )
-    )
+    itemsGenerator.sample.fold(fail("Generating a list of Item"))(valid =>
+      valid.fold(
+        _ => fail("Invalid Items"),
+        items =>
+          (for {
+            _     <- items.traverse(svc.itemService.createItem)
+            found <- svc.itemService.findAllItems
+          } yield assertEquals(found, items)).unsafeRunSync
+      ))
   }
 
   test("Delete an item successful") { resources =>
     val (svc, _) = resources
-    itemGenerator.sample.fold(fail("Generating an Item"))(
-      valid =>
-        valid.fold(
-          _ => fail("Invalid Item"),
-          item =>
-            (for {
-              created <- svc.itemService.createItem(item)
-              deleted <- svc.itemService.deleteItem(created.id)
-            } yield assertEquals(deleted, ())).unsafeRunSync
-        )
-    )
+    itemGenerator.sample.fold(fail("Generating an Item"))(valid =>
+      valid.fold(
+        _ => fail("Invalid Item"),
+        item =>
+          (for {
+            created <- svc.itemService.createItem(item)
+            deleted <- svc.itemService.deleteItem(created.id)
+          } yield assertEquals(deleted, ())).unsafeRunSync
+      ))
   }
 
   test("Get an empty list of item if they haven't created yet") { resources =>
@@ -99,21 +89,19 @@ object LiveItemServiceTest extends TestSuite[(LiveService[IO], ItemInMemoryRepos
 
   test("Get an error trying to get an item not created") { resources =>
     val (svc, _) = resources
-    itemGenerator.sample.fold(fail("Generating an Item"))(
-      valid =>
-        valid.fold(
-          _ => fail("Invalid Item"),
-          item =>
-            svc.itemService
-              .findItem(item.id)
-              .attempt
-              .map { attempt =>
-                attempt.leftMap(err => assertEquals(err, ItemNotFound.of(item.id)))
-                assert(attempt.isLeft)
-              }
-              .unsafeRunSync()
-        )
-    )
+    itemGenerator.sample.fold(fail("Generating an Item"))(valid =>
+      valid.fold(
+        _ => fail("Invalid Item"),
+        item =>
+          svc.itemService
+            .findItem(item.id)
+            .attempt
+            .map { attempt =>
+              attempt.leftMap(err => assertEquals(err, ItemNotFound.of(item.id)))
+              assert(attempt.isLeft)
+            }
+            .unsafeRunSync()
+      ))
   }
 
   override def setup(): (LiveService[IO], ItemInMemoryRepository[IO]) =
@@ -125,12 +113,10 @@ object LiveItemServiceTest extends TestSuite[(LiveService[IO], ItemInMemoryRepos
   private def createTestResources[F[_]: Sync]: F[(LiveService[F], ItemInMemoryRepository[F])] =
     ItemInMemoryRepository
       .makeRef[F]
-      .map(
-        ref => {
-          val repo: ItemInMemoryRepository[F]   = ItemInMemoryRepository[F](ref)
-          val liveRepo: LiveRepository[F]       = LiveRepository[F](repo)
-          val liveValidation: LiveValidation[F] = LiveValidation[F](liveRepo)
-          (LiveService[F](liveRepo, liveValidation), repo)
-        }
-      )
+      .map(ref => {
+        val repo: ItemInMemoryRepository[F]   = ItemInMemoryRepository[F](ref)
+        val liveRepo: LiveRepository[F]       = LiveRepository[F](repo)
+        val liveValidation: LiveValidation[F] = LiveValidation[F](liveRepo)
+        (LiveService[F](liveRepo, liveValidation), repo)
+      })
 }
