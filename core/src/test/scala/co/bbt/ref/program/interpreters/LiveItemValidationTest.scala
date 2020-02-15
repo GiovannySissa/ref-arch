@@ -14,75 +14,66 @@ import minitest.TestSuite
 object LiveValidationTest extends TestSuite[(LiveValidation[IO], ItemInMemoryRepository[IO])] with CoreGenerators {
   test("Validate when an item not exist successful") { validationResources =>
     val (liveValidation, _) = validationResources
-    itemIDGenerator.sample.fold(fail("Creating item id "))(
-      maybe =>
-        maybe.fold(
-          _ => fail("Invalid ItemID"),
-          id => liveValidation.itemValidation.notExist(id).map(v => assertEquals(v, ())).unsafeRunSync
-        )
-    )
+    itemIDGenerator.sample.fold(fail("Creating item id "))(maybe =>
+      maybe.fold(
+        _ => fail("Invalid ItemID"),
+        id => liveValidation.itemValidation.notExist(id).map(v => assertEquals(v, ())).unsafeRunSync
+      ))
   }
 
   test("If an item exist handle validation error") { validationResources =>
     val (validationInterpreter, repo) = validationResources
-    itemGenerator.sample.fold(fail("Creating item"))(
-      maybe =>
-        maybe.fold(
-          _ => fail("Invalid Item"),
-          item =>
-            (for {
-              created  <- repo.create(item)
-              notExist <- validationInterpreter.itemValidation.notExist(created.id).attempt
-            } yield {
-              notExist.leftMap(err => assertEquals(err, ItemAlreadyExist.of(item.id)))
-              assert(notExist.isLeft)
-            }).unsafeRunSync()
-        )
-    )
+    itemGenerator.sample.fold(fail("Creating item"))(maybe =>
+      maybe.fold(
+        _ => fail("Invalid Item"),
+        item =>
+          (for {
+            created  <- repo.create(item)
+            notExist <- validationInterpreter.itemValidation.notExist(created.id).attempt
+          } yield {
+            notExist.leftMap(err => assertEquals(err, ItemAlreadyExist.of(item.id)))
+            assert(notExist.isLeft)
+          }).unsafeRunSync()
+      ))
   }
 
   test("If an item wasn't found handle validation error") { validationResources =>
     val (liveValidation, _) = validationResources
-    itemIDGenerator.sample.fold(fail("Creating item id "))(
-      maybe =>
-        maybe.fold(
-          _ => fail("Invalid ItemID"),
-          id =>
-            liveValidation.itemValidation
-              .exist(id)
-              .attempt
-              .map { attempt =>
-                attempt.leftMap(err => assertEquals(err, ItemNotFound.of(id)))
-                assert(attempt.isLeft)
-              }
-              .unsafeRunSync
-        ))
+    itemIDGenerator.sample.fold(fail("Creating item id "))(maybe =>
+      maybe.fold(
+        _ => fail("Invalid ItemID"),
+        id =>
+          liveValidation.itemValidation
+            .exist(id)
+            .attempt
+            .map { attempt =>
+              attempt.leftMap(err => assertEquals(err, ItemNotFound.of(id)))
+              assert(attempt.isLeft)
+            }
+            .unsafeRunSync
+      ))
   }
 
   test("Don't handle error if an item exist") { validationResources =>
     val (validationInterpreter, repo) = validationResources
-    itemGenerator.sample.fold(fail("Creating item"))(
-      maybe =>
-        maybe.fold(
-          _ => fail("Invalid Item"),
-          item =>
-            (for {
-              created <- repo.create(item)
-              exists  <- validationInterpreter.itemValidation.exist(created.id)
-            } yield assertEquals(exists, ())).unsafeRunSync()
-        )
-    )
+    itemGenerator.sample.fold(fail("Creating item"))(maybe =>
+      maybe.fold(
+        _ => fail("Invalid Item"),
+        item =>
+          (for {
+            created <- repo.create(item)
+            exists  <- validationInterpreter.itemValidation.exist(created.id)
+          } yield assertEquals(exists, ())).unsafeRunSync()
+      ))
   }
 
   private def createValidationInterpreter[F[_]: Sync]: F[(LiveValidation[F], ItemInMemoryRepository[F])] =
     ItemInMemoryRepository
       .makeRef[F]
-      .map(
-        ref => {
-          val repo: ItemInMemoryRepository[F] = ItemInMemoryRepository[F](ref)
-          (LiveValidation[F](LiveRepository[F](repo)), repo)
-        }
-      )
+      .map(ref => {
+        val repo: ItemInMemoryRepository[F] = ItemInMemoryRepository[F](ref)
+        (LiveValidation[F](LiveRepository[F](repo)), repo)
+      })
 
   override def setup(): (LiveValidation[IO], ItemInMemoryRepository[IO]) =
     createValidationInterpreter[IO].unsafeRunSync()

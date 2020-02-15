@@ -28,4 +28,8 @@ object Dependencies {
     "org.scalacheck" %% "scalacheck" % Versions.scalaCheck % s"it,$Test",
     "org.tpolecat"   %% "doobie-h2"  % Versions.doobie     % s"it,$Test"
   )
+
+  lazy val protocol: Seq[ModuleID] = Seq(
+    "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf"
+  )
 }
