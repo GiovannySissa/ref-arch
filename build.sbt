@@ -36,6 +36,15 @@ lazy val core = project
     coverageExcludedFiles := "<empty>;.*LoggerHandler.*"
   )
 
+lazy val grpc = project
+  .configs(IntegrationTest)
+  .settings(
+    commonSettings,
+    name += "-grpc",
+    libraryDependencies ++=  Dependencies.test,
+    coverageExcludedFiles := "<empty>;.*Main.*",
+    mainClass in Compile := Some("co.bbt.ref.grpc.Main"),
+  ).dependsOn(core  % "compile->compile;test->test", core  % "compile->compile;test->it", protocol)
 
 lazy val protocol = project
     .settings(

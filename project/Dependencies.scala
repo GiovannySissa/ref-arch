@@ -24,9 +24,10 @@ object Dependencies {
     "com.olegpy"    %% "meow-mtl"        % Versions.meowMtl
   )
   lazy val test: Seq[ModuleID] = Seq(
-    "io.monix"       %% "minitest"   % Versions.miniTest   % s"it,$Test",
-    "org.scalacheck" %% "scalacheck" % Versions.scalaCheck % s"it,$Test",
-    "org.tpolecat"   %% "doobie-h2"  % Versions.doobie     % s"it,$Test"
+    "io.monix"       %% "minitest"      % Versions.miniTest   % s"it,$Test",
+    "io.monix"       %% "minitest-laws" % Versions.miniTest   % s"it,$Test",
+    "org.scalacheck" %% "scalacheck"    % Versions.scalaCheck % s"it,$Test",
+    "org.tpolecat"   %% "doobie-h2"     % Versions.doobie     % s"it,$Test"
   )
 
   lazy val protocol: Seq[ModuleID] = Seq(
