@@ -1,20 +1,19 @@
 package co.bbt.ref.infrastructure.persistence.doobie
 
 import cats.effect.{Async, Blocker, ContextShift, Resource}
+import co.bbt.ref.infrastructure.persistence.config.DBConf
 import doobie.h2.H2Transactor
 import doobie.util.ExecutionContexts
 
-//todo read configuration use pure config
-
 object TestTransactor {
-  def create[F[_]: Async: ContextShift]: Resource[F, H2Transactor[F]] =
+  def create[F[_]: Async: ContextShift](config: DBConf): Resource[F, H2Transactor[F]] =
     for {
-      ce <- ExecutionContexts.fixedThreadPool[F](10) //(config.connections.poolSize)
+      ce <- ExecutionContexts.fixedThreadPool[F](config.connections.poolSize)
       te <- ExecutionContexts.cachedThreadPool[F]
       xa <- H2Transactor.newH2Transactor[F](
-        "jdbc:h2:mem:S4N;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'classpath:sql/1.sql'", //      config.address.url,
-        "user", //config.user.userName.value,
-        "password", //config.user.password.plainText,
+        config.address.url,
+        config.user.userName.value,
+        config.user.password.plainText,
         ce,
         Blocker.liftExecutionContext(te)
       )
