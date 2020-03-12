@@ -1,7 +1,7 @@
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.6.1")
 addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.4.0")
 addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat" % "0.1.11")
-addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.3.1")
+addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.3.2")
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.1")
 addSbtPlugin("org.wartremover" % "sbt-wartremover" % "2.4.5")
 addSbtPlugin("org.lyranthe.fs2-grpc" % "sbt-java-gen" % "0.6.0")
