@@ -12,6 +12,7 @@ object Versions {
   lazy val meowMtl     = "0.3.0-M1"
   lazy val circeConfig = "0.7.0"
   lazy val circe       = "0.13.0"
+  lazy val fs2         = "2.2.1"
 }
 
 object Dependencies {
@@ -27,7 +28,8 @@ object Dependencies {
     "io.circe"      %% "circe-config"    % Versions.circeConfig,
     "io.circe"      %% "circe-core"      % Versions.circe,
     "io.circe"      %% "circe-parser"    % Versions.circe,
-    "io.circe"      %% "circe-generic"   % Versions.circe
+    "io.circe"      %% "circe-generic"   % Versions.circe,
+    "co.fs2"        %% "fs2-core"        % Versions.fs2
   )
   lazy val test: Seq[ModuleID] = Seq(
     "io.monix"       %% "minitest"   % Versions.miniTest   % s"it,$Test",
