@@ -14,7 +14,7 @@ final class LiveValidation[F[_]] private (private val validation: ItemValidation
 }
 
 object LiveValidation {
-  def apply[F[_]: MonadError[*[_], ValidationError]](repository: Repository[F]): LiveValidation[F] = {
+  def apply[F[_]: MonadError[*[_], ValidationError]](repository: Repository[F]): Validation[F] = {
     implicit val itemRepository: ItemRepository[F] = repository.itemRepository
     new LiveValidation[F](LiveItemValidation[F])
   }

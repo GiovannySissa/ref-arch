@@ -20,6 +20,7 @@ final class LiveItemService[F[_]: MonadError[*[_], DomainError]: ItemRepository:
       .find(itemID)
       .getOrElseF(MonadError[F, DomainError].raiseError(ItemNotFound.of(itemID)))
 
+// todo use fs2.stream
   override def findAllItems: F[List[Item]] =
     ItemRepository[F].findAll
       .getOrElseF(List.empty[Item].pure[F])

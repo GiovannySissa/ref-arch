@@ -13,5 +13,5 @@ abstract class BaseRepositorySuite extends TestSuite[Resource[IO, LiveRepository
     LiveItemPostgresRepositoryTestImpl[IO]
 
   override def tearDown(env: Resource[IO, LiveRepository[IO]]): Unit =
-    env.use(_ => IO.unit).unsafeRunSync()
+    env.use(_ => IO.unit).unsafeRunSync
 }

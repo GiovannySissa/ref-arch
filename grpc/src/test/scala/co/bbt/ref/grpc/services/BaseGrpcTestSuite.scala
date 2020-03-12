@@ -4,7 +4,7 @@ import cats.effect.{IO, Resource}
 import co.bbt.ref.grpc.generators.GrpcGenerators
 import minitest.TestSuite
 
-abstract class UnitTestBaseGrpc extends TestSuite[Resource[IO, ItemSvcImpl[IO]]] with GrpcGenerators {
+abstract class BaseGrpcTestSuite extends TestSuite[Resource[IO, ItemSvcImpl[IO]]] with GrpcGenerators {
 
   override def setup(): Resource[IO, ItemSvcImpl[IO]] = UnitTestEnv.create[IO]
 

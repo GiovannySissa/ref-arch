@@ -10,7 +10,7 @@ import co.bbt.ref.proto.Item.{ItemDeleteMsgProto, ItemIdProto, ItemsProto}
 import com.google.protobuf.empty.Empty
 import io.grpc.Metadata
 
-object ItemSvcImplTest extends UnitTestBaseGrpc {
+object ItemSvcImplTest extends BaseGrpcTestSuite {
 
   test("Create an item using grpc services implementation successful") { resource =>
     itemProtoGen.sample.fold(fail("Fail creating an item proto"))(itemProto =>
