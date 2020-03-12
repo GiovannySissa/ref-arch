@@ -20,11 +20,10 @@ final class LiveItemService[F[_]: MonadError[*[_], DomainError]: ItemRepository:
       .find(itemID)
       .getOrElseF(MonadError[F, DomainError].raiseError(ItemNotFound.of(itemID)))
 
-  override def findAllItems: F[List[Item]] = {
-    println(ItemRepository[F].findAll.value)
+// todo use fs2.stream
+  override def findAllItems: F[List[Item]] =
     ItemRepository[F].findAll
       .getOrElseF(List.empty[Item].pure[F])
-  }
 
   override def deleteItem(itemID: ItemID): F[Unit] =
     ItemValidation[F].exist(itemID) *> ItemRepository[F].delete(itemID)
