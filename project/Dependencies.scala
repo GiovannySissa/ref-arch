@@ -13,6 +13,7 @@ object Versions {
   lazy val circeConfig = "0.7.0"
   lazy val circe       = "0.13.0"
   lazy val fs2         = "2.2.1"
+  lazy val monix       = "3.1.0"
 }
 
 object Dependencies {
@@ -22,6 +23,7 @@ object Dependencies {
     "org.typelevel" %% "mouse"           % Versions.mouse withSources () withJavadoc (),
     "org.tpolecat"  %% "doobie-core"     % Versions.doobie,
     "org.tpolecat"  %% "doobie-postgres" % Versions.doobie,
+    "org.tpolecat"  %% "doobie-hikari"   % Versions.doobie,
     "org.typelevel" %% "squants"         % Versions.squants,
     "org.slf4j"     % "slf4j-api"        % Versions.slf4j,
     "com.olegpy"    %% "meow-mtl"        % Versions.meowMtl,
@@ -29,7 +31,8 @@ object Dependencies {
     "io.circe"      %% "circe-core"      % Versions.circe,
     "io.circe"      %% "circe-parser"    % Versions.circe,
     "io.circe"      %% "circe-generic"   % Versions.circe,
-    "co.fs2"        %% "fs2-core"        % Versions.fs2
+    "co.fs2"        %% "fs2-core"        % Versions.fs2,
+    "io.monix"      %% "monix"           % Versions.monix withSources () withJavadoc ()
   )
   lazy val test: Seq[ModuleID] = Seq(
     "io.monix"       %% "minitest"      % Versions.miniTest   % s"it,$Test",
@@ -41,4 +44,10 @@ object Dependencies {
   lazy val protocol: Seq[ModuleID] = Seq(
     "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf"
   )
+
+  lazy val grpc: Seq[ModuleID] = Seq(
+    "io.grpc" % "grpc-netty"    % scalapb.compiler.Version.grpcJavaVersion,
+    "io.grpc" % "grpc-services" % scalapb.compiler.Version.grpcJavaVersion
+  )
+
 }

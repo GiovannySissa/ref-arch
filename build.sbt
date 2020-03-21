@@ -41,7 +41,7 @@ lazy val grpc = project
   .settings(
     commonSettings,
     name += "-grpc",
-    libraryDependencies ++= Dependencies.test,
+    libraryDependencies ++= Dependencies.grpc ++ Dependencies.test,
     coverageExcludedFiles := "<empty>;.*Main.*",
     mainClass in Compile  := Some("co.bbt.ref.grpc.Main")
   )
