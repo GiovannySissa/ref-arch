@@ -23,5 +23,5 @@ final class LiveItemValidation[F[_]: MonadError[*[_], ValidationError]: ItemRepo
 }
 
 object LiveItemValidation {
-  def apply[F[_]: MonadError[*[_], ValidationError]: ItemRepository]: LiveItemValidation[F] = new LiveItemValidation[F]
+  def apply[F[_]: MonadError[*[_], ValidationError]: ItemRepository]: ItemValidation[F] = new LiveItemValidation[F]
 }
