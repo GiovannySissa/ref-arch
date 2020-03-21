@@ -5,7 +5,7 @@ import cats.instances.list._
 import cats.syntax.traverse._
 import co.bbt.ref.generators.CoreGenerators
 
-object LiveItemPostgresRepositoryITTest extends BaseRepositorySuite with CoreGenerators {
+object LiveItemPostgresRepositoryIT extends BaseRepositorySuite with CoreGenerators {
   test("Find all items successful") { repoResource =>
     itemsGenerator.sample
       .fold(fail("Generating item to use"))(itemValid =>

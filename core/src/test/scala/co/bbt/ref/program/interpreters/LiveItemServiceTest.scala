@@ -10,7 +10,7 @@ import co.bbt.ref.domain.ItemNotFound
 import co.bbt.ref.domain.item.Item
 import co.bbt.ref.generators.CoreGenerators
 import co.bbt.ref.infrastructure.persistence.memory.ItemInMemoryRepository
-import co.bbt.ref.program.modules.{LiveRepository, LiveService, LiveValidation}
+import co.bbt.ref.program.modules.{LiveRepository, LiveService, LiveValidation, Validation}
 import com.olegpy.meow.hierarchy._
 import minitest.TestSuite
 
@@ -114,9 +114,9 @@ object LiveItemServiceTest extends TestSuite[(LiveService[IO], ItemInMemoryRepos
     ItemInMemoryRepository
       .makeRef[F]
       .map(ref => {
-        val repo: ItemInMemoryRepository[F]   = ItemInMemoryRepository[F](ref)
-        val liveRepo: LiveRepository[F]       = LiveRepository[F](repo)
-        val liveValidation: LiveValidation[F] = LiveValidation[F](liveRepo)
+        val repo: ItemInMemoryRepository[F] = ItemInMemoryRepository[F](ref)
+        val liveRepo: LiveRepository[F]     = LiveRepository[F](repo)
+        val liveValidation: Validation[F]   = LiveValidation[F](liveRepo)
         (LiveService[F](liveRepo, liveValidation), repo)
       })
 }

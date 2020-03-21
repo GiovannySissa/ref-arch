@@ -9,6 +9,9 @@ sealed abstract class ValidationError(override val error: ErrorMessage) extends 
 
 sealed abstract class InvalidInput(override val error: ErrorMessage) extends DomainError(error)
 
+final case class ErrorContainer(private val errors: List[DomainError])
+  extends DomainError(error = ErrorMessage(errors.map(_.error.message).mkString(", ")))
+
 final case class InvalidItemId(override val error: ErrorMessage = ErrorMessage("Invalid Item Id"))
   extends InvalidInput(error)
 final case class InvalidName(override val error: ErrorMessage = ErrorMessage("Invalid Item name"))
@@ -43,4 +46,12 @@ final case class ItemNotFound(id: ItemID)(
 
 object ItemNotFound {
   def of(id: ItemID): ItemNotFound = ItemNotFound(id)()
+}
+
+final case class MissingField(name: String)(
+  override val error: ErrorMessage = ErrorMessage(s"The field $name is required "))
+  extends InvalidInput(error)
+
+object MissingField {
+  def of(name: String): MissingField = MissingField(name)()
 }

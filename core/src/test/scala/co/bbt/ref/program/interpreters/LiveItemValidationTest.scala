@@ -7,11 +7,11 @@ import cats.syntax.functor._
 import co.bbt.ref.domain.{ItemAlreadyExist, ItemNotFound}
 import co.bbt.ref.generators.CoreGenerators
 import co.bbt.ref.infrastructure.persistence.memory.ItemInMemoryRepository
-import co.bbt.ref.program.modules.{LiveRepository, LiveValidation}
+import co.bbt.ref.program.modules.{LiveRepository, LiveValidation, Validation}
 import com.olegpy.meow.hierarchy._
 import minitest.TestSuite
 
-object LiveValidationTest extends TestSuite[(LiveValidation[IO], ItemInMemoryRepository[IO])] with CoreGenerators {
+object LiveValidationTest extends TestSuite[(Validation[IO], ItemInMemoryRepository[IO])] with CoreGenerators {
   test("Validate when an item not exist successful") { validationResources =>
     val (liveValidation, _) = validationResources
     itemIDGenerator.sample.fold(fail("Creating item id "))(maybe =>
@@ -67,7 +67,7 @@ object LiveValidationTest extends TestSuite[(LiveValidation[IO], ItemInMemoryRep
       ))
   }
 
-  private def createValidationInterpreter[F[_]: Sync]: F[(LiveValidation[F], ItemInMemoryRepository[F])] =
+  private def createValidationInterpreter[F[_]: Sync]: F[(Validation[F], ItemInMemoryRepository[F])] =
     ItemInMemoryRepository
       .makeRef[F]
       .map(ref => {
@@ -75,10 +75,10 @@ object LiveValidationTest extends TestSuite[(LiveValidation[IO], ItemInMemoryRep
         (LiveValidation[F](LiveRepository[F](repo)), repo)
       })
 
-  override def setup(): (LiveValidation[IO], ItemInMemoryRepository[IO]) =
+  override def setup(): (Validation[IO], ItemInMemoryRepository[IO]) =
     createValidationInterpreter[IO].unsafeRunSync()
 
-  override def tearDown(env: (LiveValidation[IO], ItemInMemoryRepository[IO])): Unit = {
+  override def tearDown(env: (Validation[IO], ItemInMemoryRepository[IO])): Unit = {
     val _ = env.map(_ => ())
   }
 }
