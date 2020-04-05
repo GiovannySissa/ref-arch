@@ -7,6 +7,7 @@ services:
   - docker
 
 script:
-  - echo "echo $STEWARD_PASS" >pass.sh
+  - echo  '#!/bin/sh' >> pass.sh
+  - echo "echo $STEWARD_PASS" >>pass.sh
   - chmod u+x pass.sh
   - docker run -v $PWD:/opt/scala-steward -it fthomas/scala-steward:latest --env-var LOG_LEVEL=TRACE --do-not-fork --workspace "/opt/scala-steward/workspace" --repos-file "/opt/scala-steward/repos.md" --git-author-name "Scala Steward" --git-ask-pass "/opt/scala-steward/pass.sh" --git-author-email "helber.sissa@mail.escuelaing.edu.co" --vcs-api-host "https://api.github.com" --vcs-login "GiovannySissa"
