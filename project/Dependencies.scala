@@ -6,7 +6,7 @@ object Versions {
   lazy val miniTest    = "2.7.0"
   lazy val mouse       = "0.23"
   lazy val scalaCheck  = "1.14.3"
-  lazy val doobie      = "0.8.8"
+  lazy val doobie      = "0.9.0"
   lazy val squants     = "1.6.0"
   lazy val slf4j       = "1.7.30"
   lazy val meowMtl     = "0.3.0-M1"
