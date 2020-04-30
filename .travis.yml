@@ -17,7 +17,7 @@ jobs:
           - develop
           - feature/KA-51
       script:
-        - docker login -u $REGISTRY_USER -P $REGISTRY_TOKEN $REGISTRY_ADDRESS
+        - docker login -u $REGISTRY_USER -p $REGISTRY_TOKEN $REGISTRY_ADDRESS
         - sbt grpc/docker:publish
 
 cache:
