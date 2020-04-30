@@ -3,13 +3,25 @@ jdk:
   - openjdk11
 scala:
   - 2.12.10
-script:
-  - sbt ++$TRAVIS_SCALA_VERSION validate
+jobs:
+  include:
+    - stage: testing
+      script:
+        - sbt ++$TRAVIS_SCALA_VERSION validate
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+    - stage: publish registry
+      services: docker
+      branches:
+        only:
+          - develop
+          - feature/KA-51
+      script:
+        - docker login -u $REGISTRY_USER -P $REGISTRY_TOKEN $REGISTRY_ADDRESS
+        - sbt grpc/docker:publish
 
 cache:
   directories:
     - "$HOME/.cache/coursier/v1"
     - "$HOME/.ivy2/cache"
     - "$HOME/.sbt/boot"
-after_success:
-  - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN

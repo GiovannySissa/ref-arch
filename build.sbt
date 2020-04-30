@@ -18,6 +18,10 @@ lazy val commonSettings = Seq(
   wartremoverErrors ++= OwnWarts.all,
   libraryDependencies ++= Dependencies.common,
   testFrameworks += new TestFramework("minitest.runner.Framework"),
+  dockerRepository := Some("registry.gitlab.com/gsissa/image-registry-repo"),
+  daemonUser in Docker := "daemon",
+  dockerBaseImage := "adoptopenjdk/openjdk11:alpine-jre",
+  dockerExposedPorts := Seq(9999),
   addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.10.3"),
   addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1")
 )
@@ -46,6 +50,7 @@ lazy val grpc = project
     mainClass in Compile  := Some("co.bbt.ref.grpc.Main")
   )
   .dependsOn(core % "compile->compile;test->test", core % "compile->compile;test->it", protocol)
+  .enablePlugins(JavaAppPackaging, DockerPlugin, AshScriptPlugin)
 
 lazy val protocol = project
   .settings(
