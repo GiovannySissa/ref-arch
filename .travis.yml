@@ -5,25 +5,23 @@ scala:
   - 2.12.10
 jobs:
   include:
-#    - stage: testing
-#      script:
-#        - sbt ++$TRAVIS_SCALA_VERSION validate
-#      after_success:
-#        - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
-#    - stage: publish registry
-#      services: docker
-#      branches:
-#        only:
-#          - develop
-#          - feature/KA-51
-#      script:
-#        - docker login -u $REGISTRY_USER -p $REGISTRY_TOKEN $REGISTRY_ADDRESS
-#        - sbt grpc/docker:publish
+    - stage: testing
+      script:
+        - sbt ++$TRAVIS_SCALA_VERSION validate
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
+    - stage: publish registry
+      services: docker
+      branches:
+        only:
+          - develop
+      script:
+        - docker login -u $REGISTRY_USER -p $REGISTRY_TOKEN $REGISTRY_ADDRESS
+        - sbt grpc/docker:publish
     - stage: deploy
       branches:
         only:
           - develop
-          - feature/KA-51
       before_script:
         - curl https://get.okteto.com -sSfL | sh
         - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
