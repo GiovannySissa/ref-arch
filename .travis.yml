@@ -11,17 +11,13 @@ jobs:
       after_success:
         - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
     - stage: publish registry
+      if: branch = develop
       services: docker
-      branches:
-        only:
-          - develop
       script:
         - docker login -u $REGISTRY_USER -p $REGISTRY_TOKEN $REGISTRY_ADDRESS
         - sbt grpc/docker:publish
     - stage: deploy
-      branches:
-        only:
-          - develop
+      if: branch = develop
       before_script:
         - curl https://get.okteto.com -sSfL | sh
         - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
