@@ -19,6 +19,13 @@ jobs:
       script:
         - docker login -u $REGISTRY_USER -p $REGISTRY_TOKEN $REGISTRY_ADDRESS
         - sbt grpc/docker:publish
+    - stage: deploy
+      before_script:
+        - curl https://get.okteto.com -sSfL | sh
+        - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+        - okteto login -t $CLUSTER_API_TOKEN
+      script:
+        - ./app/scripts/run.sh
 
 cache:
   directories:

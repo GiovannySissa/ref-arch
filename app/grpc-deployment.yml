@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ref-arch-grpc
+  labels:
+    app: ref-arch-grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ref-arch-grpc
+  template:
+    metadata:
+      labels:
+        app: ref-arch-grpc
+    spec:
+      containers:
+        - name: ref-arch-grpc
+          image: $GRPC_IMAGE
+          env:
+            - name: REF_ARCH_GRPC_HOST
+              value: "127.0.0.1"
+            - name: REF_ARCH_GRPC_PORT
+              value: "9999"
+      imagePullSecrets:
+        - name: gitlab-registry
