@@ -25,6 +25,9 @@ jobs:
       script:
         - sh app/scripts/run.sh
 
+notifications:
+  slack: kit-smile:QDDQqHrRkIZvSQDMQHq7Ydqm
+
 cache:
   directories:
     - "$HOME/.cache/coursier/v1"
