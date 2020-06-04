@@ -13,7 +13,7 @@ object Versions {
   lazy val circeConfig = "0.8.0"
   lazy val circe       = "0.13.0"
   lazy val fs2         = "2.3.0"
-  lazy val monix       = "3.1.0"
+  lazy val monix       = "3.2.2"
 }
 
 object Dependencies {
