@@ -2,7 +2,7 @@ import sbt._
 
 object Versions {
   lazy val cats        = "2.1.1"
-  lazy val catsEffects = "2.1.2"
+  lazy val catsEffects = "2.1.4"
   lazy val miniTest    = "2.7.0"
   lazy val mouse       = "0.23"
   lazy val scalaCheck  = "1.14.3"
