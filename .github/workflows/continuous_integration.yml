@@ -29,12 +29,14 @@ jobs:
           - name: Build image && push            
             run: |
               cd grpc/target/docker/stage
-              BASE_IMAGE_TAG=${{ secrets.DOCKER_REGISTRY }}/${GITHUB_REPOSITORY_NAME_SLUG}:${GITHUB_REF_SLUG}
+              GIT_HASH=$(git rev-parse --short "$GITHUB_SHA")
+              GIT_BRANCH=${GITHUB_REF##*/}
+              BASE_IMAGE_TAG=${{ secrets.DOCKER_REGISTRY }}/${GITHUB_REPOSITORY_NAME_SLUG}:${GIT_BRANCH}
               echo "==============================="
               echo $BASE_IMAGE_TAG
               env
               echo "==============================="
-              docker image build -t $BASE_IMAGE_TAG-$GITHUB_SHA_SHORT .
+              docker image build -t $BASE_IMAGE_TAG-${GIT_HASH} .
               docker image build -t $BASE_IMAGE_TAG-latest .
               docker push $BASE_IMAGE_TAG-$GITHUB_SHA_SHORT
               docker push $BASE_IMAGE_TAG-latest
