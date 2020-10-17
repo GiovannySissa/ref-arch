@@ -32,6 +32,7 @@ jobs:
               BASE_IMAGE_TAG=${{ secrets.DOCKER_REGISTRY }}/${GITHUB_REPOSITORY_NAME_SLUG}:${GITHUB_REF_SLUG}
               echo "==============================="
               echo $BASE_IMAGE_TAG
+              env
               echo "==============================="
               docker image build -t $BASE_IMAGE_TAG-$GITHUB_SHA_SHORT .
               docker image build -t $BASE_IMAGE_TAG-latest .
