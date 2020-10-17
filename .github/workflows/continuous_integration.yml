@@ -33,13 +33,17 @@ jobs:
               GIT_BRANCH=${GITHUB_REF##*/}
               PROJECT=${GITHUB_REPOSITORY##*/}
               BASE_IMAGE_TAG=${{ secrets.DOCKER_REGISTRY }}/${PROJECT}:${GIT_BRANCH}
+              LATEST_IMG=$BASE_IMAGE_TAG-latest
+              SHA_IMG=$BASE_IMAGE_TAG-${GIT_HASH}
               echo "==============================="
-              echo $BASE_IMAGE_TAG
+              echo "images tagged:"
+              echo $LATEST_IMG
+              echo $SHA_IMG
               echo "==============================="
-              docker image build -t $BASE_IMAGE_TAG-${GIT_HASH} .
-              docker image build -t $BASE_IMAGE_TAG-latest .
-              docker push $BASE_IMAGE_TAG-$GITHUB_SHA_SHORT
-              docker push $BASE_IMAGE_TAG-latest
+              docker image build -t $SHA_IMG .
+              docker tag $SHA_IMG $LATEST_IMG
+              docker push $SHA_IMG
+              docker push $LATEST_IMG
 
 
 
