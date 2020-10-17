@@ -22,7 +22,7 @@ jobs:
       steps:
           - uses: actions/checkout@v2
           - name: Auth image registry
-            run: echo "${{ secrets.DOCKERPW }}" | docker login -u gsissa --password-stdin
+            run: echo "${{ secrets.DOCKERPW }}" | docker login  ${{ secrets.DOCKER_REGISTRY }} -u gsissa --password-stdin
           - name: make docker file
             run: sbt grpc/docker:stage
           - name: Build image && push
