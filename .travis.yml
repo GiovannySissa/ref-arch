@@ -1,35 +1,85 @@
-language: scala
-jdk:
-  - openjdk11
-scala:
-  - 2.12.10
-jobs:
-  include:
-    - stage: testing
-      script:
-        - sbt ++$TRAVIS_SCALA_VERSION validate
-      after_success:
-        - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
-    - stage: publish registry
-      if: branch = develop
-      services: docker
-      script:
-        - docker login -u $REGISTRY_USER -p $REGISTRY_TOKEN $REGISTRY_ADDRESS
-        - sbt grpc/docker:publish
-    - stage: deploy
-      if: branch = develop
-      before_script:
-        - curl https://get.okteto.com -sSfL | sh
-        - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
-        - okteto login -t $CLUSTER_API_TOKEN
-      script:
-        - sh app/scripts/run.sh
+LEIN_HOME=/usr/local/lib/lein
+M2_HOME=/usr/share/apache-maven-3.6.3
+GOROOT_1_11_X64=/opt/hostedtoolcache/go/1.11.13/x64
+ANDROID_HOME=/usr/local/lib/android/sdk
+JAVA_HOME_11_X64=/usr/lib/jvm/adoptopenjdk-11-hotspot-amd64
+ImageVersion=20201012.1
+AGENT_TOOLSDIRECTORY=/opt/hostedtoolcache
+LANG=C.UTF-8
+AZURE_EXTENSION_DIR=/opt/az/azcliextensions
+POWERSHELL_DISTRIBUTION_CHANNEL=GitHub-Actions-ubuntu18
+GITHUB_API_URL=https://api.github.com
+INVOCATION_ID=39a2ab24339742fe9640035b202e6a19
+BOOST_ROOT_1_72_0=/opt/hostedtoolcache/boost/1.72.0/x64
+JAVA_HOME_12_X64=/usr/lib/jvm/adoptopenjdk-12-hotspot-amd64
+ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+RUNNER_TOOL_CACHE=/opt/hostedtoolcache
+SWIFT_PATH=/usr/share/swift/usr/bin
+JAVA_HOME=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64
+RUNNER_TRACKING_ID=github_69a844d5-096b-43d6-8deb-a3134f453cea
+DOTNET_MULTILEVEL_LOOKUP="0"
+GITHUB_REPOSITORY_OWNER=GiovannySissa
+GITHUB_ACTIONS=true
+DOTNET_SKIP_FIRST_TIME_EXPERIENCE="1"
+CI=true
+DOTNET_NOLOGO="1"
+USER=runner
+GITHUB_HEAD_REF=
+GITHUB_ACTOR=GiovannySissa
+GITHUB_ACTION=run3
+GRADLE_HOME=/usr/share/gradle
+PWD=/home/runner/work/ref-arch/ref-arch/grpc/target/docker/stage
+ImageOS=ubuntu18
+PIPX_HOME="/opt/pipx"
+HOME=/home/runner
+GOROOT=/opt/hostedtoolcache/go/1.14.9/x64
+JOURNAL_STREAM=9:20662
+GOROOT_1_14_X64=/opt/hostedtoolcache/go/1.14.9/x64
+JAVA_HOME_8_X64=/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64
+RUNNER_TEMP=/home/runner/work/_temp
+GITHUB_RETENTION_DAYS=90
+GOROOT_1_15_X64=/opt/hostedtoolcache/go/1.15.2/x64
+CONDA=/usr/share/miniconda
+GOROOT_1_13_X64=/opt/hostedtoolcache/go/1.13.15/x64
+BOOST_ROOT_1_69_0=/opt/hostedtoolcache/boost/1.69.0/x64
+GITHUB_ENV=/home/runner/work/_temp/_runner_file_commands/set_env_f848e658-1aab-4752-a22b-9f0021da0a72
+DEBIAN_FRONTEND=noninteractive
+RUNNER_WORKSPACE=/home/runner/work/ref-arch
+GITHUB_REF=refs/heads/develop
+GITHUB_SHA=4df90e74f0610d9a8a09d6dc33db777892169ce6
+GITHUB_RUN_ID=312875801
+GITHUB_SERVER_URL=https://github.com
+GOROOT_1_12_X64=/opt/hostedtoolcache/go/1.12.17/x64
+GECKOWEBDRIVER=/usr/local/share/gecko_driver
+DEPLOYMENT_BASEPATH=/opt/runner
+GITHUB_EVENT_PATH=/home/runner/work/_temp/_github_workflow/event.json
+CHROMEWEBDRIVER=/usr/local/share/chrome_driver
+PIPX_BIN_DIR="/opt/pipx_bin"
+HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew"
+GITHUB_GRAPHQL_URL=https://api.github.com/graphql
+RUNNER_OS=Linux
+GITHUB_BASE_REF=
+VCPKG_INSTALLATION_ROOT=/usr/local/share/vcpkg
+GITHUB_PATH=/home/runner/work/_temp/_runner_file_commands/add_path_f848e658-1aab-4752-a22b-9f0021da0a72
+GITHUB_JOB=build
+PERFLOG_LOCATION_SETTING=RUNNER_PERFLOG
+JAVA_HOME_7_X64=/usr/lib/jvm/zulu-7-azure-amd64
+RUNNER_USER=runner
+SHLVL=1
+HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
+GITHUB_REPOSITORY=GiovannySissa/ref-arch
+GITHUB_EVENT_NAME=push
+LEIN_JAR=/usr/local/lib/lein/self-installs/leiningen-2.9.4-standalone.jar
+GITHUB_RUN_NUMBER=8
+RUNNER_PERFLOG=/home/runner/perflog
+GITHUB_WORKFLOW=Continuos integration pipeline for scala projects
+ANT_HOME=/usr/share/ant
+PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/opt/pipx_bin:/usr/share/rust/.cargo/bin:/home/runner/.config/composer/vendor/bin:/home/runner/.dotnet/tools:/snap/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+SELENIUM_JAR_PATH=/usr/share/java/selenium-server-standalone.jar
+GITHUB_WORKSPACE=/home/runner/work/ref-arch/ref-arch
+CHROME_BIN=/usr/bin/google-chrome
+HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar"
+OLDPWD=/home/runner/work/ref-arch/ref-arch
 
-# notifications:
-#   slack: kit-smile:QDDQqHrRkIZvSQDMQHq7Ydqm
-
-cache:
-  directories:
-    - "$HOME/.cache/coursier/v1"
-    - "$HOME/.ivy2/cache"
-    - "$HOME/.sbt/boot"
+git_hash=$(git rev-parse --short "$GITHUB_SHA")
+git_branch=${GITHUB_REF##*/}

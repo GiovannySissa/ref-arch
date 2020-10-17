@@ -31,10 +31,10 @@ jobs:
               cd grpc/target/docker/stage
               GIT_HASH=$(git rev-parse --short "$GITHUB_SHA")
               GIT_BRANCH=${GITHUB_REF##*/}
-              BASE_IMAGE_TAG=${{ secrets.DOCKER_REGISTRY }}/${GITHUB_REPOSITORY_NAME_SLUG}:${GIT_BRANCH}
+              PROJECT=${GITHUB_REPOSITORY##*/}
+              BASE_IMAGE_TAG=${{ secrets.DOCKER_REGISTRY }}/${PROJECT}:${GIT_BRANCH}
               echo "==============================="
               echo $BASE_IMAGE_TAG
-              env
               echo "==============================="
               docker image build -t $BASE_IMAGE_TAG-${GIT_HASH} .
               docker image build -t $BASE_IMAGE_TAG-latest .
