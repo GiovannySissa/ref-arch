@@ -18,7 +18,7 @@ jobs:
           - name: Run test
             run: sbt validate
     build:
-      # needs: test
+      needs: test
       runs-on: ubuntu-18.04
       steps:
           - uses: actions/checkout@v2
@@ -35,15 +35,25 @@ jobs:
               BASE_IMAGE_TAG=${{ secrets.DOCKER_REGISTRY }}/${PROJECT}:${GIT_BRANCH}
               LATEST_IMG=$BASE_IMAGE_TAG-latest
               SHA_IMG=$BASE_IMAGE_TAG-${GIT_HASH}
+              docker image build -t $SHA_IMG .
+              docker tag $SHA_IMG $LATEST_IMG
+              docker push $SHA_IMG
+              docker push $LATEST_IMG
               echo "==============================="
               echo "images tagged:"
               echo $LATEST_IMG
               echo $SHA_IMG
               echo "==============================="
-              docker image build -t $SHA_IMG .
-              docker tag $SHA_IMG $LATEST_IMG
-              docker push $SHA_IMG
-              docker push $LATEST_IMG
-
+    deploy:
+      # needs: build
+      runs-on: ubuntu-18.04
+      steps:
+          - uses: actions/checkout@v2
+          - name: get manifest files
+            run: |
+              ls
+              git version
+              git clone git@github.com:KitSmile/ks-manifest.git
+              ls
 
 
