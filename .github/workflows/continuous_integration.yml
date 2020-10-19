@@ -50,7 +50,7 @@ jobs:
       steps:
           - uses: actions/checkout@v2
             with: 
-              repositoy: Kitsmile/ks-manifest
+              repositoy: https://github.com/KitSmile/ks-manifest.git
               ssh-key: ${{ secrets.CI_SSH_KEY }}
               persist-credentials: false
           - name: get manifest files
@@ -59,7 +59,7 @@ jobs:
               cd 
               ls              
               git version
-              git clone git@github.com:KitSmile/ks-manifest.git
+              git clone https://github.com/KitSmile/ks-manifest.git
               ls
 
 
