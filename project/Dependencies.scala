@@ -7,7 +7,7 @@ object Versions {
   lazy val mouse       = "0.23"
   lazy val scalaCheck  = "1.14.3"
   lazy val doobie      = "0.8.8"
-  lazy val squants     = "1.6.0"
+  lazy val squants     = "1.8.1"
   lazy val slf4j       = "1.7.30"
   lazy val meowMtl     = "0.3.0-M1"
   lazy val circeConfig = "0.8.0"
