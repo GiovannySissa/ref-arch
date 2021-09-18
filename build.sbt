@@ -3,7 +3,7 @@ import org.scalafmt.sbt.ScalafmtPlugin.scalafmtConfigSettings
 ThisBuild / turbo := true
 
 lazy val commonSettings = Seq(
-  scalaVersion := "2.12.10",
+  scalaVersion := "2.12.15",
   fork in Test := true,
   organization := "co.bbt",
   name         := "ref-arch",
